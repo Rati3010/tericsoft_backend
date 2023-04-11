@@ -23,7 +23,7 @@ app.use(
   })
 );
 app.use(express.json());
-app.get("/",()=>{
+app.get("/",(req,res)=>{
   res.send("home")
 })
 app.post("/register", async (req, res) => {
