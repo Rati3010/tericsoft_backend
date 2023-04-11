@@ -1,5 +1,6 @@
 import { UserModel } from "./models/user.model.js";
 import { connection } from "./config/db.js";
+import jwt from "jsonwebtoken";
 import session from "express-session";
 import express from "express";
 import dotenv from "dotenv";
@@ -49,9 +50,10 @@ app.post("/login", async (req, res) => {
       res.status(401).json({ message: "Email is not exist, Do register first" });
     } else {
       if (user[0].password === password) {
+        const token = jwt.sign({ userId: user[0]._id }, "hush");
         req.session.user = user[0];
         req.session.save();
-        res.status(200).json({ message: "Successfully Loged in...!" });
+        res.status(200).json({ message: "Successfully Loged in...!" ,token:token});
       } else {
         res.status(401).json({ message: "Enter the correct password" });
       }
@@ -74,7 +76,7 @@ app.post("/calculateBMI", async (req, res) => {
       );
       res.send(user);
     } else {
-      res.status(401).json({ message: "Login Firsrt...!" });
+      res.status(401).json({ message: "Login First...!" });
     }
   } catch (error) {
     res.send(error);
@@ -98,7 +100,7 @@ app.get("/logout", (req, res) => {
     }
   });
 });
-app.listen(process.env.port || 8080 , async () => {
+app.listen(process.env.port, async () => {
   try {
     await connection;
     console.log("connected to DB successfully", process.env.port);
