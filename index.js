@@ -23,6 +23,9 @@ app.use(
   })
 );
 app.use(express.json());
+app.get("/",()=>{
+  res.send("home")
+})
 app.post("/register", async (req, res) => {
   const { email, name, password } = req.body;
   try {
