@@ -90,6 +90,16 @@ app.get("/getProfile", async (req, res) => {
     res.status(401).send("Login First...!")
   }
 });
+app.get("/getHistory", async (req, res) => {
+  try {
+    const id = req.session.user._id;
+    const user = await UserModel.find({_id:id});
+    const history = user.history;
+    res.json({history:history}); 
+  } catch (error) {
+    res.send(err)
+  }
+});
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
