@@ -74,7 +74,7 @@ app.post("/calculateBMI", async (req, res) => {
         { _id: id },
         { $push: { history: { height, weight, BMI } } }
       );
-      res.send(user);
+      res.json({result:BMI});
     } else {
       res.status(401).json({ message: "Login First...!" });
     }
